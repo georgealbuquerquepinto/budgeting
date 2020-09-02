@@ -101,9 +101,9 @@ export default class Dashboard extends React.Component {
     return (
       <>
         <DragDropContext onDragEnd={this.onDragEnd}>
-          <Row type='flex' style={{ width: '100%', padding: '2% 4%' }}>
-            <Col span={11} offset={1} style={{ paddingRight: '20px' }}>
-              <Card title='Itens disponíveis' bordered={false} headStyle={{ fontWeight: 600, fontSize: '20px' }} bodyStyle={{ height: 'inherit' }} style={{ minHeight: '100%' }}>
+          <Row type='flex' style={{ width: '100%' }}>
+            <Col span={12} style={{ padding: '3% 1.5% 3% 3%' }}>
+              <Card title='Itens disponíveis' bordered={false} headStyle={{ fontWeight: 600, fontSize: '20px', color: '#8C52FF' }} bodyStyle={{ height: 'inherit' }} style={{ minHeight: '100%' }}>
                 <Droppable droppableId='droppable'>
                   {(provided) => (
                     <div ref={provided.innerRef} className='droppable-env'>
@@ -148,8 +148,8 @@ export default class Dashboard extends React.Component {
                 </Droppable>
               </Card>
             </Col>
-            <Col span={11} style={{ paddingLeft: '20px' }}>
-              <Card title='Itens selecionados' bordered={false} headStyle={{ fontWeight: 600, fontSize: '20px' }} bodyStyle={{ height: 'inherit' }} style={{ minHeight: '100%' }}>
+            <Col span={12} style={{ padding: '3% 3% 3% 1.5%' }}>
+              <Card title='Itens selecionados' bordered={false} headStyle={{ fontWeight: 600, fontSize: '20px', color: '#8C52FF' }} bodyStyle={{ height: 'inherit' }} style={{ minHeight: '100%' }}>
                 <Droppable droppableId='droppable2'>
                   {(provided) => (
                     <div ref={provided.innerRef} className='droppable-env'>
