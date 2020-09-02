@@ -5,8 +5,10 @@ import {
   Col,
   Card,
   InputNumber,
+  Button,
 } from 'antd';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import Budget from './budget';
 import data from '../_utils/data';
 import { formatCurrency } from '../_utils/constats';
 
@@ -44,10 +46,12 @@ export default class Dashboard extends React.Component {
     this.state = {
       items: data,
       selected: [],
+      buildBudget: false,
     };
 
     this.onDragEnd = this.onDragEnd.bind(this);
     this.updateAmount = this.updateAmount.bind(this);
+    this.newBudget = this.newBudget.bind(this);
   }
 
   onDragEnd(result) {
@@ -95,14 +99,18 @@ export default class Dashboard extends React.Component {
     this.setState({ selected });
   }
 
+  newBudget() {
+    this.setState({ items: data, selected: [], buildBudget: false });
+  }
+
   render() {
-    const { items, selected } = this.state;
+    const { items, selected, buildBudget } = this.state;
 
     return (
       <>
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Row type='flex' style={{ width: '100%' }}>
-            <Col span={12} style={{ padding: '3% 1.5% 3% 3%' }}>
+            <Col span={12} style={{ padding: '3% 1.5% 0.5% 3%' }}>
               <Card title='Itens disponíveis' bordered={false} headStyle={{ fontWeight: 600, fontSize: '20px', color: '#8C52FF' }} bodyStyle={{ height: 'inherit' }} style={{ minHeight: '100%' }}>
                 <Droppable droppableId='droppable'>
                   {(provided) => (
@@ -114,6 +122,7 @@ export default class Dashboard extends React.Component {
                               key={item.id}
                               draggableId={item.id}
                               index={index}
+                              isDragDisabled={buildBudget}
                             >
                               {(pvd, snp) => (
                                 <div
@@ -148,7 +157,7 @@ export default class Dashboard extends React.Component {
                 </Droppable>
               </Card>
             </Col>
-            <Col span={12} style={{ padding: '3% 3% 3% 1.5%' }}>
+            <Col span={12} style={{ padding: '3% 3% 0.5% 1.5%' }}>
               <Card title='Itens selecionados' bordered={false} headStyle={{ fontWeight: 600, fontSize: '20px', color: '#8C52FF' }} bodyStyle={{ height: 'inherit' }} style={{ minHeight: '100%' }}>
                 <Droppable droppableId='droppable2'>
                   {(provided) => (
@@ -160,6 +169,7 @@ export default class Dashboard extends React.Component {
                               key={item.id}
                               draggableId={item.id}
                               index={index}
+                              isDragDisabled={buildBudget}
                             >
                               {(pvd, snp) => (
                                 <div
@@ -197,6 +207,21 @@ export default class Dashboard extends React.Component {
                 </Droppable>
                 <p className='value-total'>{`Total: R$ ${formatCurrency(selected.reduce((a, b) => a + (b.value * b.amount || 0), 0))}`}</p>
               </Card>
+            </Col>
+          </Row>
+          <Row type='flex' align='middle'>
+            <Col span={12} style={{ textAlign: 'center', padding: '0.5% 1.5% 3% 3%' }}>
+              {
+                buildBudget === false
+                  ? <Button type='primary' size='large' icon='build' shape='round' disabled={selected.length === 0} onClick={() => this.setState({ buildBudget: true })}>Gerar orçamento</Button>
+                  : <Button type='primary' size='large' icon='plus' shape='round' onClick={this.newBudget}>Novo orçamento</Button>
+              }
+            </Col>
+            <Col span={12} style={{ textAlign: 'center', padding: '0.5% 3% 3% 1.5%' }}>
+              {
+                buildBudget
+                && <Budget items={selected} />
+              }
             </Col>
           </Row>
         </DragDropContext>
